@@ -17,6 +17,12 @@ func handleLog(c *gin.Context) {
 		return
 	}
 
+	err = validateEvent(event)
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
 	go log.Log(event)
 	httputil.SendOK(c)
 }
@@ -29,4 +35,12 @@ func getEvent(c *gin.Context) (*models.Event, error) {
 		return nil, httputil.NewError("Failed to parse log event", http.StatusBadRequest)
 	}
 	return &event, nil
+}
+
+func validateEvent(e *models.Event) error {
+	if e.Level == models.DebugLevel || e.Level == models.InfoLevel || e.Level == models.WarnLevel || e.Level == models.ErrorLevel {
+		return nil
+	}
+
+	return httputil.NewError("Unsupported log level: "+e.Level, http.StatusBadRequest)
 }
