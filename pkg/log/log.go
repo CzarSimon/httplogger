@@ -8,16 +8,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var logger *zap.Logger
-
-func init() {
-	l, err := zap.NewProduction()
-	if err != nil {
-		stdLog.Fatalln("Failed to get zap.Logger", err)
-	}
-
-	logger = l
-}
+var logger = setupLogger()
 
 type logFn func(msg string, fields ...zapcore.Field)
 
@@ -36,7 +27,7 @@ func selectLog(e *models.Event) logFn {
 	case models.DebugLevel:
 		return logger.Debug
 	case models.InfoLevel:
-		return logger.Debug
+		return logger.Info
 	case models.WarnLevel:
 		return logger.Warn
 	case models.ErrorLevel:
@@ -44,4 +35,18 @@ func selectLog(e *models.Event) logFn {
 	default:
 		return logger.Info
 	}
+}
+
+func setupLogger() *zap.Logger {
+	cfg := zap.NewProductionConfig()
+	cfg.Level = zap.NewAtomicLevelAt(zap.DebugLevel)
+	cfg.DisableCaller = true
+	cfg.DisableStacktrace = true
+
+	logger, err := cfg.Build()
+	if err != nil {
+		stdLog.Fatalln("Failed to get zap.Logger", err)
+	}
+
+	return logger
 }

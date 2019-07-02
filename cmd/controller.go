@@ -7,6 +7,7 @@ import (
 	"github.com/CzarSimon/httplogger/pkg/log"
 	"github.com/CzarSimon/httplogger/pkg/models"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func handleLog(c *gin.Context) {
@@ -21,10 +22,11 @@ func handleLog(c *gin.Context) {
 }
 
 func getEvent(c *gin.Context) (*models.Event, error) {
-	var event *models.Event
-	err := c.ShouldBindJSON(event)
+	var event models.Event
+	err := c.ShouldBindJSON(&event)
 	if err != nil {
+		logger.Error("Failed to parse log event", zap.Error(err))
 		return nil, httputil.NewError("Failed to parse log event", http.StatusBadRequest)
 	}
-	return event, nil
+	return &event, nil
 }

@@ -16,7 +16,7 @@ func main() {
 	logger.Info(fmt.Sprintf("Starting httplogger on port: %s", port))
 	err := server().ListenAndServe()
 	if err != nil {
-		logger.Error("Unexpected server error", zap.Error("err", err))
+		logger.Error("Unexpected server error", zap.Error(err))
 	}
 }
 
