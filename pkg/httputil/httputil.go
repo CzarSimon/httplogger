@@ -9,11 +9,7 @@ import (
 	"go.uber.org/zap"
 )
 
-var errLog *zap.Logger
-
-func init() {
-	errLog = getLogger("errorLogger")
-}
+var errLog = GetLogger("errorLogger")
 
 // Error implements the error interface with a message and http status code.
 type Error struct {
@@ -95,8 +91,8 @@ func (e *Error) Error() string {
 	return fmt.Sprintf("Error(statusCode=%d, message=%s)", e.StatusCode, e.Message)
 }
 
-// getLogger creates a named logger for internal application logs.
-func getLogger(name string) *zap.Logger {
+// GetLogger creates a named logger for internal application logs.
+func GetLogger(name string) *zap.Logger {
 	logger, err := zap.NewProduction()
 	if err != nil {
 		log.Fatalln("Failed to get zap.Logger", err)
