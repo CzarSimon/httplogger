@@ -1,10 +1,16 @@
 github.com/CzarSimon/httplogger/pkg/httputil v0.0.0-20190702212210-ae29b16c0f17 h1:mW/OwCk3Pv8xSUateahzpYncuYc17KQMw5SCfHQ+P54=
 github.com/CzarSimon/httplogger/pkg/httputil v0.0.0-20190702212210-ae29b16c0f17/go.mod h1:aDUQcTSx8MeqMwhDy0TLtKaq9cnY/E0wYFWAc0pdaxc=
+github.com/CzarSimon/httplogger/pkg/httputil v0.0.0-20190702220939-1d3aebe497eb h1:nixBXG+L8cCsSuoI1fd0lNyZ7o2NNvedZrrippCINxo=
+github.com/CzarSimon/httplogger/pkg/httputil v0.0.0-20190702220939-1d3aebe497eb/go.mod h1:aDUQcTSx8MeqMwhDy0TLtKaq9cnY/E0wYFWAc0pdaxc=
 github.com/CzarSimon/httplogger/pkg/log v0.0.0-20190702212210-ae29b16c0f17 h1:NvxCoFcgIYarr1c3LQlRUjFk7cw3X7N4uN239T5ULaM=
 github.com/CzarSimon/httplogger/pkg/log v0.0.0-20190702212210-ae29b16c0f17/go.mod h1:0QXdCVOlICthHM82skjZC8xXRbwbH2qco+2nNwjxADg=
+github.com/CzarSimon/httplogger/pkg/log v0.0.0-20190702220939-1d3aebe497eb h1:m2R3fAckHJ7mDp+kNm3x9ENvJ6uAEW+4VJZXB3v/zEE=
+github.com/CzarSimon/httplogger/pkg/log v0.0.0-20190702220939-1d3aebe497eb/go.mod h1:0QXdCVOlICthHM82skjZC8xXRbwbH2qco+2nNwjxADg=
 github.com/CzarSimon/httplogger/pkg/models v0.0.0-20190702195510-36c2a3a5270d/go.mod h1:s8kT+yYGxAgXneXPjajxjuh2HhchhnNpcs8xQ/3p80g=
 github.com/CzarSimon/httplogger/pkg/models v0.0.0-20190702212210-ae29b16c0f17 h1:F+QtvQyYVu6V5byl7SHmomv7+CAIostpr+KylfPiod0=
 github.com/CzarSimon/httplogger/pkg/models v0.0.0-20190702212210-ae29b16c0f17/go.mod h1:s8kT+yYGxAgXneXPjajxjuh2HhchhnNpcs8xQ/3p80g=
+github.com/CzarSimon/httplogger/pkg/models v0.0.0-20190702220939-1d3aebe497eb h1:tNrVUZOoFWxD9WHKQ2wtZydT64VwkfgRisTUUI+y404=
+github.com/CzarSimon/httplogger/pkg/models v0.0.0-20190702220939-1d3aebe497eb/go.mod h1:s8kT+yYGxAgXneXPjajxjuh2HhchhnNpcs8xQ/3p80g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3 h1:t8FVkw33L+wilf2QiWkw0UV77qRpcH/JHPKGpKa2E8g=
 github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=

@@ -4,11 +4,22 @@ import (
 	stdLog "log"
 
 	"github.com/CzarSimon/httplogger/pkg/models"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-var logger = setupLogger()
+var (
+	logger       = setupLogger()
+	eventsLogged = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "events_logged_total",
+			Help: "The total number of logged events",
+		},
+		[]string{"app", "version", "level"},
+	)
+)
 
 type logFn func(msg string, fields ...zapcore.Field)
 
@@ -20,6 +31,8 @@ func Log(e *models.Event) {
 		zap.String("version", e.Version),
 		zap.String("sessionId", e.SessionID),
 		zap.String("clientId", e.ClientID))
+
+	eventsLogged.WithLabelValues(e.AppName, e.Version, e.Level).Inc()
 }
 
 func selectLog(e *models.Event) logFn {
