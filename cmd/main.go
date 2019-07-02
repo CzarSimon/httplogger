@@ -23,7 +23,6 @@ func main() {
 func server() *http.Server {
 	r := httputil.NewRouter()
 	r.POST("/v1/logs", handleLog)
-	r.GET("/health", httputil.SendOK)
 
 	return &http.Server{
 		Addr:    port,
