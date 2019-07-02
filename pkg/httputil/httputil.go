@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.uber.org/zap"
 )
 
@@ -47,6 +48,8 @@ func SendError(err *Error, c *gin.Context) {
 func NewRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Recovery(), HandleErrors())
+	r.GET("/health", SendOK)
+	r.GET("/metrics", prometheusHandler())
 
 	return r
 }
@@ -74,6 +77,13 @@ func HandleErrors() gin.HandlerFunc {
 
 		logError(httpError)
 		SendError(httpError, c)
+	}
+}
+
+func prometheusHandler() gin.HandlerFunc {
+	h := promhttp.Handler()
+	return func(c *gin.Context) {
+		h.ServeHTTP(c.Writer, c.Request)
 	}
 }
 
