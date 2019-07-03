@@ -25,14 +25,31 @@ type logFn func(msg string, fields ...zapcore.Field)
 
 // Log logs an event and records metrics for it.
 func Log(e *models.Event) {
+	if e.Level == models.ErrorLevel {
+		logErrorEvent(e)
+	} else {
+		logEvent(e)
+	}
+
+	eventsLogged.WithLabelValues(e.AppName, e.Version, e.Level).Inc()
+}
+
+func logErrorEvent(e *models.Event) {
+	logger.Error(e.Message,
+		zap.String("app", e.AppName),
+		zap.String("version", e.Version),
+		zap.String("sessionId", e.SessionID),
+		zap.String("clientId", e.ClientID),
+		zap.String("stacktrace", e.Stacktrace))
+}
+
+func logEvent(e *models.Event) {
 	log := selectLog(e)
 	log(e.Message,
 		zap.String("app", e.AppName),
 		zap.String("version", e.Version),
 		zap.String("sessionId", e.SessionID),
 		zap.String("clientId", e.ClientID))
-
-	eventsLogged.WithLabelValues(e.AppName, e.Version, e.Level).Inc()
 }
 
 func selectLog(e *models.Event) logFn {

@@ -39,12 +39,13 @@ func TestLog(t *testing.T) {
 	log.Log(event)
 
 	event = &models.Event{
-		Level:     "error",
-		AppName:   "app-1",
-		Version:   "v1",
-		SessionID: "session-id-1",
-		ClientID:  "client-id-1",
-		Message:   "error test message",
+		Level:      "error",
+		AppName:    "app-1",
+		Version:    "v1",
+		SessionID:  "session-id-1",
+		ClientID:   "client-id-1",
+		Message:    "error test message",
+		Stacktrace: "details on the error",
 	}
 	log.Log(event)
 
