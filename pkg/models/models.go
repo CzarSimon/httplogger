@@ -14,12 +14,13 @@ const (
 
 // Event log event.
 type Event struct {
-	AppName   string `json:"app,omitempty"`
-	Version   string `json:"version,omitempty"`
-	SessionID string `json:"sessionId,omitempty"`
-	ClientID  string `json:"clientId,omitempty"`
-	Message   string `json:"message,omitempty"`
-	Level     string `json:"level,omitempty"`
+	AppName    string `json:"app,omitempty"`
+	Version    string `json:"version,omitempty"`
+	SessionID  string `json:"sessionId,omitempty"`
+	ClientID   string `json:"clientId,omitempty"`
+	Message    string `json:"message,omitempty"`
+	Stacktrace string `json:"stacktrace,omitempty"`
+	Level      string `json:"level,omitempty"`
 }
 
 func (e *Event) String() string {
