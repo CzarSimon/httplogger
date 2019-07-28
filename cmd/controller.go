@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/CzarSimon/httplogger/pkg/httputil"
 	"github.com/CzarSimon/httplogger/pkg/log"
 	"github.com/CzarSimon/httplogger/pkg/models"
@@ -32,7 +30,7 @@ func getEvent(c *gin.Context) (*models.Event, error) {
 	err := c.ShouldBindJSON(&event)
 	if err != nil {
 		logger.Error("Failed to parse log event", zap.Error(err))
-		return nil, httputil.NewError("Failed to parse log event", http.StatusBadRequest)
+		return nil, httputil.BadRequest("Failed to parse log event")
 	}
 	return &event, nil
 }
@@ -42,5 +40,5 @@ func validateEvent(e *models.Event) error {
 		return nil
 	}
 
-	return httputil.NewError("Unsupported log level: "+e.Level, http.StatusBadRequest)
+	return httputil.BadRequest("Unsupported log level: " + e.Level)
 }
