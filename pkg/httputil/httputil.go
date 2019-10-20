@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/prometheus/client_golang/prometheus"
@@ -80,7 +81,7 @@ func SendError(err *Error, c *gin.Context) {
 // NewRouter creates a default router.
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Recovery(), HandleErrors(), Metrics())
+	r.Use(gin.Recovery(), cors.Default(), HandleErrors(), Metrics())
 	r.GET("/health", SendOK)
 	r.GET("/metrics", prometheusHandler())
 
