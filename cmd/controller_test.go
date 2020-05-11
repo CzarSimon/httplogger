@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/CzarSimon/httplogger/pkg/models"
+	"github.com/CzarSimon/httplogger/internal/models"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
 )
@@ -68,6 +68,41 @@ func TestLog(t *testing.T) {
 	assert.Equal(http.StatusBadRequest, res.Code)
 }
 
+func TestLog_BadContentType(t *testing.T) {
+	assert := assert.New(t)
+	s := server()
+
+	errorEvent := models.Event{
+		AppName:    "TEST_APP",
+		Version:    "1.2.0",
+		SessionID:  "some-session-id",
+		ClientID:   "some-client-id",
+		Message:    "A wild event occured.",
+		Stacktrace: "this is a stacktrace.",
+		Level:      "error",
+	}
+
+	req := createTestRequest("/v1/logs", http.MethodPost, errorEvent)
+	req.Header.Del("Content-Type")
+	res := performTestRequest(s.Handler, req)
+	assert.Equal(http.StatusUnsupportedMediaType, res.Code)
+
+	req = createTestRequest("/v1/logs", http.MethodPost, errorEvent)
+	req.Header.Set("Content-Type", "application/xml")
+	res = performTestRequest(s.Handler, req)
+	assert.Equal(http.StatusUnsupportedMediaType, res.Code)
+
+	req = createTestRequest("/v1/logs", http.MethodPost, errorEvent)
+	req.Header.Set("Content-Type", "text/plain")
+	res = performTestRequest(s.Handler, req)
+	assert.Equal(http.StatusUnsupportedMediaType, res.Code)
+
+	req = createTestRequest("/v1/logs", http.MethodPost, errorEvent)
+	req.Header.Set("Content-Type", "text/html")
+	res = performTestRequest(s.Handler, req)
+	assert.Equal(http.StatusUnsupportedMediaType, res.Code)
+}
+
 func TestCheckHealthAndMetrics(t *testing.T) {
 	assert := assert.New(t)
 
@@ -102,5 +137,6 @@ func createTestRequest(route, method string, body interface{}) *http.Request {
 		log.Fatal("Failed to create request", zap.Error(err))
 	}
 
+	req.Header.Set("Content-Type", "application/json")
 	return req
 }

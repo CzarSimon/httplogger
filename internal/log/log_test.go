@@ -1,13 +1,16 @@
 package log_test
 
 import (
+	"context"
 	"testing"
 
-	"github.com/CzarSimon/httplogger/pkg/log"
-	"github.com/CzarSimon/httplogger/pkg/models"
+	"github.com/CzarSimon/httplogger/internal/log"
+	"github.com/CzarSimon/httplogger/internal/models"
 )
 
 func TestLog(t *testing.T) {
+	ctx := context.Background()
+
 	event := &models.Event{
 		Level:     "debug",
 		AppName:   "app-1",
@@ -16,7 +19,7 @@ func TestLog(t *testing.T) {
 		ClientID:  "client-id-1",
 		Message:   "debug test message",
 	}
-	log.Log(event)
+	log.Log(ctx, event)
 
 	event = &models.Event{
 		Level:     "info",
@@ -26,7 +29,7 @@ func TestLog(t *testing.T) {
 		ClientID:  "client-id-1",
 		Message:   "info test message",
 	}
-	log.Log(event)
+	log.Log(ctx, event)
 
 	event = &models.Event{
 		Level:     "warning",
@@ -36,7 +39,7 @@ func TestLog(t *testing.T) {
 		ClientID:  "client-id-1",
 		Message:   "warning test message",
 	}
-	log.Log(event)
+	log.Log(ctx, event)
 
 	event = &models.Event{
 		Level:      "error",
@@ -47,7 +50,7 @@ func TestLog(t *testing.T) {
 		Message:    "error test message",
 		Stacktrace: "details on the error",
 	}
-	log.Log(event)
+	log.Log(ctx, event)
 
 	event = &models.Event{
 		Level:     "custom",
@@ -57,5 +60,5 @@ func TestLog(t *testing.T) {
 		ClientID:  "client-id-1",
 		Message:   "custom test message",
 	}
-	log.Log(event)
+	log.Log(ctx, event)
 }

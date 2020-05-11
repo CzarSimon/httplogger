@@ -1,9 +1,11 @@
 package log
 
 import (
+	"context"
 	stdLog "log"
 
-	"github.com/CzarSimon/httplogger/pkg/models"
+	"github.com/CzarSimon/httplogger/internal/models"
+	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"go.uber.org/zap"
@@ -24,7 +26,10 @@ var (
 type logFn func(msg string, fields ...zapcore.Field)
 
 // Log logs an event and records metrics for it.
-func Log(e *models.Event) {
+func Log(ctx context.Context, e *models.Event) {
+	span, _ := opentracing.StartSpanFromContext(ctx, "log_log")
+	defer span.Finish()
+
 	if e.Level == models.ErrorLevel {
 		logErrorEvent(e)
 	} else {

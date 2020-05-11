@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/CzarSimon/httplogger/pkg/httputil"
+	"github.com/CzarSimon/httputil"
+	logutil "github.com/CzarSimon/httputil/logger"
 	"go.uber.org/zap"
 )
 
-var logger = httputil.GetLogger("main")
+var logger = logutil.GetDefaultLogger("httplogger/main")
 
 const port = ":8080"
 
@@ -21,7 +22,11 @@ func main() {
 }
 
 func server() *http.Server {
-	r := httputil.NewRouter()
+	r := httputil.NewRouter("httplogger", func() error {
+		return nil
+	})
+	r.Use(httputil.AllowJSON())
+
 	r.POST("/v1/logs", handleLog)
 
 	return &http.Server{

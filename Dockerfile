@@ -1,18 +1,20 @@
-FROM golang:1.12-alpine3.10 AS build
-RUN apk update && apk add git
+FROM golang:1.13.7-alpine3.11 AS build
 
 # Copy source
 WORKDIR /app/httplogger
 COPY . .
 
-# Build application
-WORKDIR /app/httplogger/cmd
+# Download dependencies application
 RUN go mod download
+
+# Build application.
+WORKDIR /app/httplogger/cmd
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-FROM alpine:3.10 AS run
+FROM alpine:3.11 AS run
 
 WORKDIR /opt/app
+RUN ls /etc/httplogger/migrations
 COPY --from=build /app/httplogger/cmd/cmd httplogger
 ENV GIN_MODE release
 CMD ["./httplogger"]
