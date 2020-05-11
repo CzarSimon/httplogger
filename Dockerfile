@@ -14,7 +14,6 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 FROM alpine:3.11 AS run
 
 WORKDIR /opt/app
-RUN ls /etc/httplogger/migrations
 COPY --from=build /app/httplogger/cmd/cmd httplogger
 ENV GIN_MODE release
 CMD ["./httplogger"]
