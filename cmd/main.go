@@ -8,6 +8,7 @@ import (
 
 	"github.com/CzarSimon/httputil"
 	logutil "github.com/CzarSimon/httputil/logger"
+	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 	"go.uber.org/zap"
@@ -31,9 +32,13 @@ func main() {
 }
 
 func server() *http.Server {
-	r := httputil.NewRouter("httplogger", func() error {
-		return nil
-	})
+	r := httputil.NewCustomRouter(
+		healthCheck,
+		gin.Recovery(),
+		httputil.Trace("httplogger"),
+		httputil.Metrics(),
+		httputil.HandleErrors(),
+	)
 	r.Use(httputil.AllowJSON())
 
 	r.POST("/v1/logs", handleLog)
@@ -57,4 +62,8 @@ func setupTracer() io.Closer {
 
 	opentracing.SetGlobalTracer(tracer)
 	return closer
+}
+
+func healthCheck() error {
+	return nil
 }
