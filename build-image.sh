@@ -5,4 +5,5 @@ IMAGE_VERSION=$(cat package.json | jq .version --raw-output)
 IMAGE_NAME="$CONTAINER_REGISTRY/$IMAGE_NAME:$IMAGE_VERSION"
 
 docker build -t $IMAGE_NAME .
+trivy image $IMAGE_NAME --ignore-unfixed --exit-code 1
 docker push $IMAGE_NAME

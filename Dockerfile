@@ -1,4 +1,4 @@
-FROM golang:1.14.6-alpine3.12 AS build
+FROM golang:1.19.1-alpine3.16 AS build
 
 # Copy source
 WORKDIR /app/httplogger
@@ -11,9 +11,10 @@ RUN go mod download
 WORKDIR /app/httplogger/cmd
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
-FROM alpine:3.12 AS run
+FROM alpine:3.16 AS run
 
 WORKDIR /opt/app
 COPY --from=build /app/httplogger/cmd/cmd httplogger
 ENV GIN_MODE release
+USER httplogger
 CMD ["./httplogger"]
