@@ -1,20 +1,26 @@
-FROM golang:1.19.1-alpine3.16 AS build
+FROM golang:1.19-bullseye AS build
 
 # Copy source
 WORKDIR /app/httplogger
-COPY . .
+COPY go.mod .
+COPY go.sum .
 
 # Download dependencies application
 RUN go mod download
 
 # Build application.
+COPY cmd cmd
+COPY internal internal
 WORKDIR /app/httplogger/cmd
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o httplogger
 
-FROM alpine:3.16 AS run
+FROM gcr.io/distroless/base-debian11 AS runtime
 
+# Copy binary from buid step
 WORKDIR /opt/app
-COPY --from=build /app/httplogger/cmd/cmd httplogger
+COPY --from=build /app/httplogger/cmd/httplogger httplogger
+
+# Prepare runtime
+USER nonroot:nonroot
 ENV GIN_MODE release
-USER httplogger
 CMD ["./httplogger"]

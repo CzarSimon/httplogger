@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/CzarSimon/httputil"
 	logutil "github.com/CzarSimon/httputil/logger"
@@ -44,8 +45,9 @@ func server() *http.Server {
 	r.POST("/v1/logs", handleLog)
 
 	return &http.Server{
-		Addr:    port,
-		Handler: r,
+		Addr:              port,
+		Handler:           r,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 }
 
